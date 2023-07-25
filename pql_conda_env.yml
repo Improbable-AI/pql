@@ -1,0 +1,10 @@
+name: pql
+channels:
+  - conda-forge
+  - pytorch
+  - anaconda
+dependencies:
+  - python=3.8
+  - pytorch
+  - cudatoolkit
+  - torchvision

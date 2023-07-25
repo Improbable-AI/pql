@@ -1,0 +1,40 @@
+defaults:
+  - algo: pql_algo
+  - task: null
+  - logging: default
+  - _self_
+
+hydra:
+  searchpath:
+    - pkg://isaacgymenvs/cfg
+
+num_envs: 4096
+eval_num_envs: 150
+device: 'cuda'
+sim_device: 'cuda'
+rl_device: ${.device}
+graphics_device_id: 0
+
+seed: 42
+max_step: null
+max_time: 3600 # in seconds
+eval_headless: True
+headless: True
+isaac_param: False
+
+# necessary if you are running envs from IsaacGymEnvs
+physics_engine: 'physx'
+pipeline: 'gpu'
+num_threads: 4
+solver_type: 1
+num_subscenes: 4
+
+info_track_keys: null # a list of keys to track in the info dict returned by env.step
+info_track_step: null # ['last', 'all-episode', 'all-step'], whether to track the info in the last
+                      # step or all steps. for all steps, whether to sum all values in episodes
+                      # up or keep track per-step values
+
+artifact: null
+
+
+

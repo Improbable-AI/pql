@@ -1,0 +1,10 @@
+wandb:
+  project: pql-sweep
+  mode: 'online'
+  tags: null
+  group: null
+  entity: null
+  name: null
+  settings:
+    ignore_globs: [ '*.pt' ]
+

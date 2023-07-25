@@ -1,0 +1,39 @@
+defaults:
+  - actor_critic.yaml
+  - _self_
+
+name: "PQL"
+horizon_len: 1
+memory_size: 5e6
+batch_size: 8192
+nstep: 3
+tau: 0.05
+gamma: 0.99
+warm_up: 32
+act_class: TanhMLPPolicy
+cri_class: DoubleQ
+eval_freq: 200
+
+critic_actor_ratio: 2
+critic_sample_ratio: 8
+no_tgt_actor: True
+
+p_learner_gpu: 1
+v_learner_gpu: 1
+num_gpus: 2
+num_cpus: 40
+
+noise:
+  type: 'mixed' # ['fixed', 'mixed']
+  decay: null  #  "exp" and "linear"
+  exp_decay_rate: 0.99
+  lin_decay_iters: 10000
+  std_max: 0.8
+  std_min: 0.05
+  tgt_pol_std: 0.8
+  tgt_pol_noise_bound: 0.2
+
+distl: False
+v_min: -10
+v_max: 10
+num_atoms: 51

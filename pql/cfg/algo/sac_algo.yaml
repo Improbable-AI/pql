@@ -1,0 +1,20 @@
+defaults:
+  - actor_critic.yaml
+  - _self_
+
+name: "SAC"
+horizon_len: 1
+memory_size: 5e6
+batch_size: 8192
+nstep: 3
+tau: 0.05
+gamma: 0.99
+warm_up: 32
+act_class: TanhDiagGaussianMLPPolicy
+cri_class: DoubleQ
+eval_freq: 100
+alpha_lr: 0.005
+
+update_times: 8
+no_tgt_actor: True
+alpha: null
