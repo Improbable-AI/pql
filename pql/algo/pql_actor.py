@@ -1,14 +1,12 @@
 import torch
 
-from pql.utils.model_util import load_model
 from pql.replay.nstep_replay import NStepReplay
-from pql.utils.common import Tracker
-from pql.utils.noise import add_mixed_normal_noise
-from pql.utils.noise import add_normal_noise
-from pql.utils.schedule_util import ExponentialSchedule
-from pql.utils.schedule_util import LinearSchedule
+from pql.utils.common import Tracker, handle_timeout
+from pql.utils.model_util import load_model
+from pql.utils.noise import add_mixed_normal_noise, add_normal_noise
+from pql.utils.schedule_util import ExponentialSchedule, LinearSchedule
 from pql.utils.torch_util import RunningMeanStd
-from pql.utils.common import handle_timeout
+
 
 class PQLActor:
     def __init__(self, env, cfg):
@@ -32,7 +30,7 @@ class PQLActor:
             info_track_keys = [info_track_keys] if isinstance(info_track_keys, str) else info_track_keys
             self.info_trackers = {key: Tracker(self.cfg.algo.tracker_len) for key in info_track_keys}
             self.info_track_step = {key: self.cfg.info_track_step[idx] for idx, key in enumerate(info_track_keys)}
-            self.traj_info_values = {key: torch.zeros(self.cfg.num_envs, dtype=torch.float32, device=self.cfg.device) for key in info_track_keys}
+            self.traj_info_values = {key: torch.zeros(self.cfg.num_envs, dtype=torch.float32, device=self.sim_device) for key in info_track_keys}
 
         if self.cfg.algo.obs_norm:
             self.obs_rms = RunningMeanStd(shape=self.obs_dim, device=self.sim_device)
@@ -101,7 +99,7 @@ class PQLActor:
                 self.obs_rms.update(obs)
             if random:
                 action = torch.rand((self.cfg.num_envs, self.action_dim),
-                                    device=self.cfg.device) * 2.0 - 1.0
+                                    device=self.sim_device) * 2.0 - 1.0
             else:
                 action = self.get_actions(obs, sample=True)
 
